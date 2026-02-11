@@ -1,0 +1,489 @@
+DAILY STOCK SUMMARY REPORT
+
+(Factual | Automated | No Analysis)
+
+1. HEADER SECTION
+
+Purpose: Report identity + date clarity
+
+Format:
+
+Daily Stock Summary Report
+Stock Name: <STOCK_NAME>
+Report Date: <DATE>
+
+
+Rules:
+
+Stock name config.py nunchi ravali
+
+Date system/date config nunchi ravali
+
+No extra text
+
+2. PRICE SNAPSHOT
+
+(Numbers First — 10 Second Rule)
+
+Purpose: User ki first glance lo complete price picture ivvadam
+
+Format (Text / Table):
+
+Open Price   : <VALUE>
+Close Price  : <VALUE>
+Day High     : <VALUE> at <TIME>
+Day Low      : <VALUE> at <TIME>
+
+
+Rules (STRICT):
+
+Just numbers + time
+
+No “why”, no explanation
+
+Order change cheyyakoodadu
+
+This section must come BEFORE chart
+
+3. VISUAL SECTION (CHART)
+
+Purpose: Numbers ni visually reinforce cheyyadam
+
+Chart Type (LOCKED):
+
+High–Low range + Open–Close (daily summary style)
+
+Format:
+
+[ Embedded Chart Image ]
+
+
+Rules:
+
+Static image (PNG)
+
+No indicators
+
+No trend lines
+
+No labels like bullish/bearish
+
+Chart title max: “Daily Price Range”
+
+4. NEWS SECTION (FACTUAL ONLY)
+4.1 Stock-Specific News
+
+Format:
+
+• <Headline>
+  Source: <Source Name>
+  Published: <Date & Time>
+  Link: <Official Article URL>
+
+4.2 Geopolitical News
+
+(Same format as above)
+
+4.3 Major Market-Impact News
+
+(Same format as above)
+
+EMPTY NEWS HANDLING RULE (NEW – LOCKED)
+
+If no headlines are found for a category, display:
+
+No relevant headlines published.
+
+
+Purpose:
+
+Avoid blank sections
+
+Maintain consistent report structure
+
+Improve professional readability
+
+NEWS RULES (VERY IMPORTANT)
+
+Headlines from RSS / verified input only
+
+Headline text unchanged
+
+Source name mandatory
+
+Publish time mandatory
+
+Clickable link mandatory
+
+❌ No explanation
+❌ No price linkage
+❌ No opinion
+
+5. AUTO SUMMARY
+
+(Report-Level Only)
+
+Purpose: Entire report ni short factual wrap-up lo compress cheyyadam
+
+Input Sources (LOCKED):
+
+Stock name
+
+OHLC numbers
+
+High/Low time
+
+Presence of news categories
+
+Format (Bullets only):
+
+• The stock opened at <VALUE> and closed at <VALUE>.
+• The day’s high was recorded at <TIME> and the low at <TIME>.
+• Stock-specific, geopolitical, and market-related news were published during the day.
+
+
+Rules (STRICT):
+
+Bullets only
+
+Factual statements only
+
+No headline meanings
+
+No cause–effect
+
+No advice
+
+No sentiment
+
+6. FOOTER
+
+(Optional but Professional — UPDATED)
+
+Format:
+
+This report is auto-generated for informational purposes only.
+No analysis, prediction, or investment advice is provided.
+Report generated at: <DATE TIME>
+
+
+Purpose:
+
+Audit trail
+
+Archival clarity
+
+Professional reporting standard
+
+TECHNICAL INPUT FORMAT SUMMARY
+config.py (User + System)
+
+STOCK_NAME
+
+REPORT_DATE (or auto date)
+
+CSV_PATH
+
+RSS_FEEDS / NEWS_SOURCE_PATH
+
+OUTPUT_PDF_PATH
+
+CSV DATA FORMAT
+time,open,high,low,close
+
+RSS / NEWS DATA FIELDS USED
+headline
+source
+publish_time
+link
+category
+
+WHAT THIS FORMAT GUARANTEES
+
+✅ Trust
+✅ Legal safety
+✅ No analysis drift
+✅ Automation-friendly
+✅ Easy to explain (interview / client)
+✅ Easy to extend (API later)
+
+TRAINER FINAL NOTE
+
+“This is not a trading tool.
+This is a reporting utility.”
+
+TRAINER FINAL NOTE
+
+“This is not a trading tool. This is a reporting utility.”
+
+You have designed this correctly and professionally.
+
+REAL-WORLD DATA FLOW (DAILY EXECUTION)
+FINAL REALISTIC FLOW (PROFESSIONAL)
+Stock Name (config)
+        ↓
+Price Data Source (API / free source)
+        ↓
+Program fetches data
+        ↓
+CSV auto-generate/update
+        ↓
+Program reads CSV
+        ↓
+Chart + Summary + PDF
+
+
+👉 User involvement = ZERO (daily)
+
+future update 
+
+OPTION 2: EXCHANGE OFFICIAL DAILY FILES (ADVANCED)
+
+Some exchanges:
+
+Provide daily bhavcopy
+
+CSV/ZIP format
+
+Daily:
+
+Program download chesthundi
+
+Extract chesthundi
+
+Required stock filter chesthundi
+
+Internal CSV generate chesthundi
+
+👉 Slightly complex, but 100% reliable
+
+
+
+📁 PROJECT FILE STRUCTURE (FINAL)
+
+stock_daily_report/
+│
+├── config.py
+│
+├── data/
+│   ├── raw/
+│   │   └── price_data_raw.json
+│   │
+│   ├── processed/
+│   │   └── daily_prices.csv
+│
+├── news/
+│   └── rss_feeds.py
+│
+├── charts/
+│   └── price_chart.png
+│
+├── reports/
+│   └── daily_stock_report.pdf
+│
+├── utils/
+│   ├── price_loader.py
+│   ├── chart_generator.py
+│   ├── news_loader.py
+│   └── summary_generator.py
+│
+├── report_builder.py
+│
+└── main.py
+
+
+
+
+
+
+
+
+Perfect. Ippudu mee requirement 100% clear.
+Nenu project trainer ga final, real-time professional design explain chesthanu.
+
+Mee requirement ni nenu oka sentence lo lock chesthanu:
+
+User real time lo config.py lo ONLY stock name (and optional date) matrame enter chesthadu.
+Migatha anni values system automatic ga generate / set cheyyali.
+
+Idi correct, professional, real-world SaaS style.
+
+FINAL USER EXPERIENCE (REAL TIME)
+User config.py lo chesedi ONLY THIS 👇
+# Stock Configuration
+STOCK_NAME = "RELIANCE"
+
+# Report Date
+REPORT_DATE = None      # user touch cheyyadu
+USE_TODAY_DATE = True   # default
+
+
+👉 User ikkada stop
+👉 Migatha anni automatic
+
+NOW HOW SYSTEM HANDLES THE REST (IMPORTANT)
+
+Ippudu nenu behind-the-scenes automation explain chesthanu.
+
+1️⃣ AUTO DATE HANDLING
+Logic (concept):
+
+USE_TODAY_DATE = True unte
+→ system automatically today date teesukuntundi
+
+REPORT_DATE user ivvakapoyina problem ledu
+
+👉 User confusion zero
+
+2️⃣ CSV_PATH — AUTO GENERATED
+
+User CSV_PATH ivvaru.
+
+System logic:
+
+STOCK_NAME = "RELIANCE"
+↓
+Generate internal path:
+data/processed/reliance_2026-01-16.csv
+
+
+👉 CSV:
+
+Program create chesthundi
+
+Program read chesthundi
+
+User ki telusukovalsina avasaram ledu
+
+3️⃣ PRICE DATA SOURCE — AUTO
+
+User em cheppadu.
+
+System defaults:
+
+PRICE_DATA_SOURCE = API (default)
+
+
+Flow:
+
+Program stock name use chesi
+
+Free data source nunchi data fetch chesthundi
+
+Raw data → processed CSV
+
+👉 CSV internal artifact matrame
+
+4️⃣ RSS FEEDS — AUTO SELECT
+
+User RSS feeds ivvaru.
+
+System logic:
+
+if STOCK_NAME is Indian stock:
+    use India market RSS
+else:
+    use global RSS
+
+
+RSS feeds hardcoded internally in code (NOT config).
+
+👉 User ki RSS concept telusukovalsina avasaram ledu.
+
+5️⃣ OUTPUT PATHS — AUTO
+
+User output paths ivvaru.
+
+System defaults:
+
+charts/price_chart.png
+reports/daily_stock_report_<date>.pdf
+
+
+File name lo:
+
+Stock name
+
+Date
+
+👉 Archive friendly
+👉 No overwrite risk
+
+6️⃣ SUMMARY — 100% AUTO
+
+User em cheppadu.
+
+System:
+
+Fixed template
+
+Deterministic
+
+Factual
+
+👉 AI thinking ledu
+👉 User decision ledu
+
+FINAL REAL-TIME CONFIG DESIGN (LOCKED)
+User-facing config.py (VERY SIMPLE)
+# === USER INPUT ONLY ===
+STOCK_NAME = "RELIANCE"
+USE_TODAY_DATE = True
+
+System-managed config (HIDDEN FROM USER)
+
+Handled internally by code:
+
+Date
+
+CSV paths
+
+RSS feeds
+
+Output paths
+
+Data source
+
+Summary template
+
+👉 This is exactly how real SaaS tools work.
+
+WHY THIS DESIGN IS CORRECT (TRAINER REVIEW)
+
+✅ Non-technical user friendly
+✅ No misconfiguration risk
+✅ Automation ready
+✅ Scalable to many users
+✅ Freelancer / product quality
+✅ No daily manual work
+
+You chose the correct professional architecture.
+
+VERY IMPORTANT TRAINER LINE (REMEMBER)
+
+If the user can generate a correct daily report by changing only ONE variable,
+your system design is production-grade.
+
+PROJECT FLOW (BIG PICTURE)
+
+User Input (config.py)
+        ↓
+Price Data Fetch (Automatic)
+        ↓
+CSV Auto Generation (Internal)
+        ↓
+Price Calculations (OHLC + Time)
+        ↓
+Chart Generation (PNG)
+        ↓
+RSS News Fetch (Automatic)
+        ↓
+Auto Summary (Template-based)
+        ↓
+PDF Report Build
+        ↓
+Final Daily Stock Summary Report
+
+Mee design production-grade
+give me prompt [role :you are the ready made project code generator based on my project data you are not only blindly write code 
+based on my project data you review first ad then write code correctly exactly user requirements problem:[] output daily_stock_report.pdf format: []  project structure files [] additional project data []]

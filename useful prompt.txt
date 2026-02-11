@@ -1,0 +1,510 @@
+ROLE
+
+You are an expert Document Design Analyst and Content Reviewer.
+
+MY INTENT
+
+I am attaching all my project files, including:
+
+Source documents
+
+My current output PDF
+
+A reference image
+
+Your task is to first analyze all the attached files completely, and then modify my output PDF so that it matches the reference image format exactly.
+
+IMPORTANT NOTE
+
+I am not asking for suggestions only.
+I want full, concrete modifications based on my given requirements.
+
+I will paste a Requirements / Modifications section below.
+You must strictly follow those requirements while making changes.
+
+YOUR TASKS
+
+Full Analysis
+
+Read all project files fully (do not skip anything)
+
+Understand the current structure, layout, and formatting of my output PDF
+
+Reference Image Analysis
+
+Analyze the reference image to identify:
+
+Layout structure
+
+Alignment
+
+Font hierarchy
+
+Spacing
+
+Section flow
+
+Visual hierarchy
+
+Modification Requirement Analysis
+
+Analyze the requirements I provide below
+
+Identify exactly what needs to be changed in my output PDF to meet:
+
+The reference image format
+
+The given requirements
+
+Full Modification Execution (MANDATORY)
+
+Apply all required modifications
+
+Restructure, reformat, and realign content as needed
+
+Page count can be two or more pages
+
+Do not change the meaning of content
+
+Do not add new content
+
+Focus strictly on format, structure, layout, and clarity
+
+Code-Based / Structured Output
+
+Provide the fully modified output in a structured, reproducible format
+
+The output should be ready to generate/export as a PDF
+
+Follow the reference image format strictly
+
+REQUIREMENTS (PASTE BELOW)
+
+[Image-Format Design Rules (exact, actionable)
+
+Use these rules as the single source of truth for rebuilding the PDF layout.
+
+Document fundamentals
+
+Page size: A4 (portrait). Keep margins: left/right/top/bottom = 0.5 in.
+
+Grid: single-column flow, but specific sections use a two-column container (top Price Snapshot + Chart; lower Major Market-Impact News + Auto Summary).
+
+Base font family: Helvetica (system-safe); if a different font is available in your environment (Inter / Roboto), you may substitute but keep metrics similar to Helvetica.
+
+Typography & sizes (exact)
+
+Title: fontSize = 26 (bold), leading ~32, center-aligned.
+
+Top meta row (Stock Name / Report Date): fontSize = 11, regular weight; the row is a single baseline, Stock Name aligned left, Report Date aligned right on the same baseline.
+
+Section headings (e.g., "Price Snapshot", "Stock-Specific News"): fontSize = 14, bold, margin-top = 12 pt, margin-bottom = 6 pt.
+
+Table body / normal paragraph text: fontSize = 10.
+
+Small grey (footer and disclaimers): fontSize = 8, color = #7a7a7a (reportlab grey).
+
+Numeric emphasis: numeric values inside the Price Snapshot table should be bold and right-aligned in their cell.
+
+Top two-column area (exact placement)
+
+Left column width = 46% page width (inside margins). Right column width = 46%. Inter-column gutter = 8% of content width (or 0.2 inch).
+
+The left column contains a bordered box titled Price Snapshot (small heading above box or integrate heading as part of the box).
+
+The Price Snapshot box is a two-column inner table: left column labels (Open Price, Close Price, Day High, Day Low), right column values with bold numeric and appended small time-of-day where relevant ("254.79 at 10:19").
+
+Right column contains the chart image sized to fill the column width and maintain aspect ratio; include a centered chart caption "Daily Price Range".
+
+Visual treatments
+
+Use soft horizontal divider lines (1pt, #e0e0e0) between major sections.
+
+The Price Snapshot box border: 1pt solid #d9d9d9 with inner padding 8 pt; cells have no extra outer grid lines beyond overall box border.
+
+Bulleted lists: round bullet glyph, 6 pt gap to text, 6 pt vertical spacing between bullets.
+
+Links: underlined and blue if possible; always show link URL on a separate line prefixed "Link:" (this is how the reference image shows them).
+
+Two-column lower section: split left (Major Market-Impact News) and right (Auto Summary) with a vertical divider or clear gutter. Auto Summary content uses bullet list with short sentences.
+
+Footer
+
+Small grey legal text in one paragraph, followed by "Report generated at: {timestamp}" on the next line (right aligned).
+
+Footer top margin = 12 pts from previous section.
+
+Page break logic
+
+If any of the three news categories exceed the space on page 1, push overflowing items into page 2 and continue with the same header (paper header repeated on subsequent pages: Title + Stock / Date row) in a smaller form (Title 18, Stock/Date 10).
+
+The "Auto Summary" must appear on the same page as at least the start of "Major Market-Impact News". If both long, break after the primary items and continue both lists on page 2 in the same two-column format.
+
+Required Modifications List (file → change mapping, very specific)
+
+These are the exact edits to implement in your codebase (you can apply them directly in report_builder.py and minor changes in chart_generator.py and config.py).
+
+Update config.py (visual constants)
+
+Add new font sizes to match the image:
+
+PDF_FONT_SIZE_TITLE = 26
+
+PDF_FONT_SIZE_META = 11
+
+PDF_FONT_SIZE_SECTION = 14
+
+Keep the existing body and small sizes; ensure ensure_directories() remains.
+
+(file: config.py). 
+
+config
+
+Modify chart_generator.py to produce a wide chart suitable for the right column:
+
+Use figsize=(6,3.5) (width 6in, height 3.5in) or similar to create a landscape chart that fits the right column.
+
+Save PNG with dpi=150. Ensure transparent background = False.
+
+Return the exact path used by the PDF builder. (file: chart_generator.py). 
+
+chart_generator
+
+Rewrite layout composition in report_builder.py (largest set of changes)
+
+Create a ParagraphStyle set aligned with design rules:
+
+Title (size 26, bold, center)
+
+Meta (size 11)
+
+Section (size 14, bold)
+
+Body (size 10)
+
+SmallGrey (size 8, color grey)
+
+Build the top header as a small horizontal table with two cells: left cell contains <b>Stock Name:</b> {STOCK_NAME}, right cell contains Report Date: {get_report_date()}; set NO border, vertical alignment center.
+
+Build the top two-column container using a Table with one row, two cells:
+
+Cell 0: inner Table representing Price Snapshot with its own border (BOX), internal spacing, and rows as label/value pairs; numeric values right-aligned and bold.
+
+Cell 1: the chart image with caption. Ensure cell alignments place the top of the chart flush with the top of the price box.
+
+Re-order elements: header → top meta row → small horizontal rule → two-column container → Stock-Specific News → Geopolitical News → horizontal rule → lower two-column container → footer.
+
+For news lists: render as bullet lists (Table with two columns? or Paragraph items each prefixed with bullet glyph), each bullet shows:
+
+Headline (hyperlinked)
+
+Source: {source} on next line, normal body style
+
+Link: {link} on next line in blue/underlined (or just plain text if link styling not available)
+
+Published: {publish_time}
+
+Ensure KeepTogether for each news item to avoid splitting a single item across pages if it fits.
+
+(file: report_builder.py). 
+
+report_builder
+
+Adjust the data keys expected by report_builder (no content change)
+
+Confirm price dict keys exist exactly as used: open, last, high, low, high_time, low_time, as_of_time, market_state. (file: price_loader.py). 
+
+price_loader
+
+Add page-repeat header when multi-page
+
+Use doc.build(elements, onFirstPage=..., onLaterPages=...) or ensure header is readded at top of each page if news overflows.
+
+Spacing & dividers
+
+Insert Spacer(1, 0.1*inch) and TableStyle rules to match the vertical rhythm in the image.
+
+Add a light 1pt horizontal line after the "Price Snapshot + Chart" block and also before the footer.
+
+Unit tests / visual QA
+
+Render a sample with the existing data and compare visually with the reference image; tune chart width and table paddings until match.
+
+ReportLab Implementation Notes (practical snippets & styles — HIGHLY ACTIONABLE)
+
+(These are brief, targeted hints to implement the above in report_builder.py. If you want, I can produce a ready-to-run patch for this file.)
+
+Use a two-cell outer Table for top area:
+
+from reportlab.platypus import Table, TableStyle, Image, Paragraph, Spacer
+from reportlab.lib import colors
+
+top_table = Table(
+    [[price_snapshot_table, Image(CHART_OUTPUT_PATH, width=3.6*inch, height=2.5*inch)]],
+    colWidths=[3.2*inch, 3.2*inch],
+    hAlign='LEFT'
+)
+top_table.setStyle(TableStyle([
+    ('VALIGN', (0,0), (-1,-1), 'TOP'),
+    ('LEFTPADDING', (0,0), (-1,-1), 0),
+    ('RIGHTPADDING', (0,0), (-1,-1), 0),
+]))
+
+
+Price snapshot box: use nested Table with BOX and INNERGRID turned off; use ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#d9d9d9')) and ('ALIGN', (1,0), (1,-1), 'RIGHT'), ('FONTNAME', (1,0), (1,-1), 'Helvetica-Bold').
+
+Use Paragraph with HTML-like <link href="..."> tags for clickable headlines. Example: Paragraph(f'<a href="{link}">{headline}</a>', style).
+
+GAP ANALYSIS (what current output DOES NOT match the reference image)
+
+Top-row layout
+
+Current: Title then separate paragraphs for stock and date (vertical stack).
+
+Needed: Title centered + immediate inline meta row with stock left / date right on same baseline.
+
+Price Snapshot + Chart
+
+Current: Price table and chart are stacked sequentially.
+
+Needed: Side-by-side with Price Snapshot in a bordered box (left) and chart with caption (right), both aligned to the same top baseline and sharing visual height.
+
+Table styling
+
+Current: Table uses GRID for every cell (makes it look tabular).
+
+Needed: Single outer border for Price Snapshot, label/value cells with numeric emphasis and right alignment, subtle cell padding.
+
+News format
+
+Current: Headline links appear inline as paragraphs; Source and publish time inline, minimal delimitation.
+
+Needed: Bullet layout, Source: line and Link: line on separate lines as in the reference, consistent indent and spacing.
+
+Lower two-column area (Major Market-Impact / Auto Summary)
+
+Current: Everything rendered sequentially—no two-column grouping.
+
+Needed: Two columns showing news on left and auto-generated summary bullets on the right; match spacing and separators.
+
+Footer
+
+Current: Footer present but typography and alignment not matching (font size too big).
+
+Needed: Small grey font, legal line centered or left aligned as in the image, timestamp on a separate line.
+
+Modification Checklist (prioritized, in-order)
+
+Add new constants to config.py for title / meta / section font sizes. 
+
+config
+
+Update chart_generator.py to output a wide, landscape chart figsize=(6,3.5). 
+
+chart_generator
+
+Replace the sequential price+chart rendering in report_builder.py with a single Table-based two-column container; style the Price Snapshot inner table with BOX and right-align/bold numeric cells. 
+
+report_builder
+
+Reformat news blocks into bulleted items with consistent lines for Source and Link; ensure news_loader.py values are used (no inventing). 
+
+news_loader
+
+Implement the lower two-column block (Major Market-Impact / Auto Summary) as a Table with equal columns and a vertical gutter. 
+
+summary_generator
+
+Add repeated header logic for multi-page; set KeepTogether for delicate blocks. 
+
+report_builder
+
+Tweak paddings/line-heights so numeric values align visually with the chart. Visual QA and iterate.
+
+Fully Reformatted Output PDF Content — Page-wise (exact textual layout / placeholders)
+
+Below I provide the complete content and layout in the order it should be placed in the PDF. Use the typographic rules provided above. All runtime values must be substituted from your price, news, and summary objects at build-time. This preserves meaning and avoids inventing content.
+
+Page 1 (A4 portrait)
+
+(Top margin 0.5 in)
+
+Centered Title (Title style)
+
+Daily Stock Summary Report
+
+Inline meta row (Meta style)
+
+Left cell: Stock Name: {STOCK_NAME}
+
+Right cell (same baseline, right aligned): Report Date: {get_report_date()}
+
+(Add a thin horizontal rule below this meta row — 1pt, light grey.)
+
+Top Section Heading (Section style)
+
+Price Snapshot (This heading can be visually placed immediately above the boxed table on the left column; the box itself will also visually contain the labels.)
+
+Top two-column container (single row, two columns)
+
+Left column — Price Snapshot box (boxed table, inner padding 8 pt):
+
+-----------------------------------------
+| Open Price        |   {open:.2f}       |
+| Close Price       |   {last:.2f}       |
+| Day High          |   {high:.2f} at {high_time} |
+| Day Low           |   {low:.2f} at {low_time}  |
+| As of Time        |   {as_of_time}     |
+-----------------------------------------
+
+
+Styling specifics:
+
+Labels column left-aligned.
+
+Values column right-aligned, numeric values bold.
+
+If market_state == "CLOSED", use "Close Price" label; else "Last Traded Price".
+
+Right column — Daily Price Range (chart):
+
+Chart image inserted here (PNG generated by chart_generator.py) sized to fill the column width while maintaining aspect ratio.
+
+Centered caption below chart (meta style): Daily Price Range
+
+Spacer (approx 12 pt) then a soft horizontal divider.
+
+Stock-Specific News (Section heading)
+
+If news['stock'] is empty: show italic text (Body style): No relevant headlines published.
+
+Else, for each item in news['stock'] produce a bullet block:
+
+• {headline (clickable)}
+  Source: {source}
+  Link: {link}
+  Published: {publish_time}
+
+
+Each bullet separated vertically by 6–8 pt.
+
+Geopolitical News (Section heading)
+
+Render same style as Stock-Specific News. Use bullets per item.
+
+(If space remains) Minor horizontal rule and then continue with remaining news; if not, continue on page 2 with the same header repeated.
+
+Bottom two-column block (single row)
+
+Left column — Major Market-Impact News (Section heading)
+
+Bullet list of news['market'] items:
+
+• {headline (clickable)}
+  Source: {source}
+  Link: {link}
+
+
+Right column — Auto Summary (Section heading)
+
+Render summary bullets (from generate_summary) as:
+
+• The stock opened at {open:.2f} and {closed_or_last_text} at {last:.2f}.
+• The day's high was {high:.2f} and the low was {low:.2f}.
+• {If any news}: Stock specific, geopolitical, and market-related news were published.
+  {Else}: No significant stock, geopolitical, or market-related news was published.
+
+
+Footer area (small grey)
+
+Small paragraph, centered or left:
+
+This report is auto-generated for informational purposes only. No analysis, prediction, or investment advice is provided.
+Report generated at: {now.strftime('%d %b %Y, %H:%M:%S %Z')}
+
+
+Use SmallGrey style (fontSize 8, grey color).
+
+Page 2+ (if needed — news overflow)
+
+Top of page: repeat condensed header:
+
+Title (smaller): Daily Stock Summary Report (fontSize = 18)
+
+Inline meta row: Stock Name: {STOCK_NAME} (left) / Report Date: {get_report_date()} (right)
+
+Then continue news lists (Stock, Geopolitical, Major market) and Auto Summary if they overflow.
+
+Keep the exact same two-column block style for Major Market-Impact + Auto Summary when continuing.
+
+Example of an exact (runtime) block — to help implement (DO NOT MODIFY MEANING)
+
+(you must fill the curly placeholders at runtime from your price, news, summary objects)
+
+Daily Stock Summary Report
+
+Stock Name: AAPL                                 Report Date: 2026-01-20
+--------------------------------------------------------------------------------
+
+Price Snapshot                           Daily Price Range
+[ BOXED TABLE ]                           [ image: charts/price_chart.png ]
+Open Price :                 252.51
+Last Traded Price :          251.51
+Day High :                   254.79 at 10:19
+Day Low :                    250.85 at 10:19
+As of Time :                  20 Jan 2026, 10:19 EST
+
+Stock-Specific News
+No relevant headlines published.
+
+Geopolitical News
+• Trump says he will "100%" carry out Greenland tariffs threat, as EU vows to protect its interests
+  Source: BBC World
+  Link: https://www.bbc.com/news/trump-greenland
+
+• Confronted over Greenland, Europe is ditching its softly-softly approach to Trump
+  Source: BBC World
+  Link: https://www.bbc.com/news/europe-greenland
+
+Major Market-Impact News                        Auto Summary
+• Netflix updates Warner Bros bid to all-cash offer,      • The stock opened at 252.51 and closed at 251.51.
+  Source: BBC Business                                      • The day's high was recorded at 10:19 (254.79) and the low at 10:19 (250.85).
+  Link: https://www.bbc.com/news/netflix-warner-b           • Stock specific, geopolitical, and market-related news were published during the day.
+
+--------------------------------------------------------------------------------
+This report is auto-generated for informational purposes only. No analysis, prediction, or investment advice is provided.
+Report generated at: 20 Jan 2026, 10:19:52 EST
+
+
+Notes: The block above is a visual sample showing how the values are integrated — do not hardcode numbers. Pull them from your price dict and news arrays.
+
+QA / Visual validation checklist (use after implementing)
+
+Title is centred and visually the largest element.
+
+Stock name (left) and Report date (right) sit on the same baseline with no linebreak between them.
+
+Price Snapshot box (left) and Daily Price Range chart (right) top edges align.
+
+Price numeric values are bold and right-aligned inside the Price Snapshot box.
+
+News bullets include Headline, Source, and Link as separate small lines; links are visible and clickable.
+
+Lower Major Market-Impact News and Auto Summary appear as two columns with consistent alignment and spacing.
+
+Footer small grey text matches the image visually (size and colour).
+
+If content overflows, header repeats and layout is preserved on page 2.]
+
+
+FINAL EXPECTATION
+
+The final output PDF must:
+
+Visually match the reference image format
+
+Follow all provided requirements exactly
+
+Be professional, clean, and print-ready
+
+Accuracy and format fidelity are the highest priority

@@ -1,0 +1,371 @@
+ROLE:
+You are a senior Python backend engineer and automation architect.
+You are a READY-MADE PROJECT CODE GENERATOR, but you DO NOT blindly write code.
+
+You must:
+1. First deeply REVIEW my project data
+2. Validate requirements, constraints, and edge cases
+3. Identify missing or conflicting logic
+4. Propose a correct and scalable design
+5. Only then write CLEAN, WORKING, PRODUCTION-READY CODE
+6. Follow EXACTLY what is asked — no assumptions, no extra features
+
+--------------------------------------------------
+PROJECT PROBLEM:
+[Problem Statement (Professional Rewrite)
+
+Small and independent market participants often rely on multiple sources—trading apps, news websites, and charts—to understand daily 
+stock movements. This process is time-consuming, fragmented, and repetitive. While large financial platforms provide comprehensive 
+reports, they are expensive, complex, and not tailored for individual needs.
+
+Existing solutions offer pieces of the required information (prices, charts, or news), but there is a lack of a simple, customizable,
+ and automated daily reporting tool designed specifically for small users who want a clear overview without analysis or predictions.
+
+
+---
+
+Proposed Solution
+
+The solution is a lightweight automation tool that generates a daily stock summary report in PDF or DOC format, containing:
+
+Daily price information (open, high, low, close)
+
+Simple, readable charts
+
+Related news headlines published on the same day
+
+A clean, consistent report structure delivered every day
+
+
+This tool focuses on data organization and clarity, not predictions or investment advice. It is intended for a small group of users who value regular, structured information and want to reduce manual effort.
+
+
+---
+
+Scope & Reality Check
+
+This solution:
+
+Is designed for small users, not mass markets
+
+Prioritizes trust, consistency, and simplicity
+
+Can be built, deployed, and maintained realistically
+
+Can generate steady, modest income
+
+Is not intended to replace large financial platforms or provide trading signals
+]
+
+--------------------------------------------------
+EXPECTED OUTPUT:
+- Output file name: daily_stock_report.pdf
+- Output format: STRICTLY follow the format section below
+- No extra text
+- No analysis inside the PDF
+- Numbers first, fast-scan friendly
+
+--------------------------------------------------
+OUTPUT FORMAT (MUST FOLLOW EXACTLY):
+[DAILY STOCK SUMMARY REPORT
+
+(Factual | Automated | No Analysis)
+
+1. HEADER SECTION
+
+Purpose: Report identity + date clarity
+
+Format:
+
+Daily Stock Summary Report
+Stock Name: <STOCK_NAME>
+Report Date: <DATE>
+
+
+Rules:
+
+Stock name config.py nunchi ravali
+
+Date system/date config nunchi ravali
+
+No extra text
+
+2. PRICE SNAPSHOT
+
+(Numbers First — 10 Second Rule)
+
+Purpose: User ki first glance lo complete price picture ivvadam
+
+Format (Text / Table):
+
+Open Price   : <VALUE>
+Close Price  : <VALUE>
+Day High     : <VALUE> at <TIME>
+Day Low      : <VALUE> at <TIME>
+
+
+Rules (STRICT):
+
+Just numbers + time
+
+No “why”, no explanation
+
+Order change cheyyakoodadu
+
+This section must come BEFORE chart
+
+3. VISUAL SECTION (CHART)
+
+Purpose: Numbers ni visually reinforce cheyyadam
+
+Chart Type (LOCKED):
+
+High–Low range + Open–Close (daily summary style)
+
+Format:
+
+[ Embedded Chart Image ]
+
+
+Rules:
+
+Static image (PNG)
+
+No indicators
+
+No trend lines
+
+No labels like bullish/bearish
+
+Chart title max: “Daily Price Range”
+
+4. NEWS SECTION (FACTUAL ONLY)
+4.1 Stock-Specific News
+
+Format:
+
+• <Headline>
+  Source: <Source Name>
+  Published: <Date & Time>
+  Link: <Official Article URL>
+
+4.2 Geopolitical News
+
+(Same format as above)
+
+4.3 Major Market-Impact News
+
+(Same format as above)
+
+EMPTY NEWS HANDLING RULE (NEW – LOCKED)
+
+If no headlines are found for a category, display:
+
+No relevant headlines published.
+
+
+Purpose:
+
+Avoid blank sections
+
+Maintain consistent report structure
+
+Improve professional readability
+
+NEWS RULES (VERY IMPORTANT)
+
+Headlines from RSS / verified input only
+
+Headline text unchanged
+
+Source name mandatory
+
+Publish time mandatory
+
+Clickable link mandatory
+
+❌ No explanation
+❌ No price linkage
+❌ No opinion
+
+5. AUTO SUMMARY
+
+(Report-Level Only)
+
+Purpose: Entire report ni short factual wrap-up lo compress cheyyadam
+
+Input Sources (LOCKED):
+
+Stock name
+
+OHLC numbers
+
+High/Low time
+
+Presence of news categories
+
+Format (Bullets only):
+
+• The stock opened at <VALUE> and closed at <VALUE>.
+• The day’s high was recorded at <TIME> and the low at <TIME>.
+• Stock-specific, geopolitical, and market-related news were published during the day.
+
+
+Rules (STRICT):
+
+Bullets only
+
+Factual statements only
+
+No headline meanings
+
+No cause–effect
+
+No advice
+
+No sentiment
+
+6. FOOTER
+
+(Optional but Professional — UPDATED)
+
+Format:
+
+This report is auto-generated for informational purposes only.
+No analysis, prediction, or investment advice is provided.
+Report generated at: <DATE TIME>
+
+
+Purpose:
+
+Audit trail
+
+Archival clarity
+
+Professional reporting standard
+
+TECHNICAL INPUT FORMAT SUMMARY
+config.py (User + System)
+
+STOCK_NAME
+
+REPORT_DATE (or auto date)
+
+CSV_PATH
+
+RSS_FEEDS / NEWS_SOURCE_PATH
+
+OUTPUT_PDF_PATH
+
+CSV DATA FORMAT
+time,open,high,low,close
+
+RSS / NEWS DATA FIELDS USED
+headline
+source
+publish_time
+link
+category]
+WHAT THIS FORMAT GUARANTEES
+
+✅ Trust
+✅ Legal safety
+✅ No analysis drift
+✅ Automation-friendly
+✅ Easy to explain (interview / client)
+✅ Easy to extend (API later)
+
+--------------------------------------------------
+RULES & CONSTRAINTS:
+- Stock name must come from config.py
+- Date must come from system date or config.py
+- Fully automated execution
+- No hard-coded values
+- No manual intervention
+- Reusable and configurable design
+- Error handling is mandatory
+- Logging is mandatory
+- Code must be readable and modular
+
+--------------------------------------------------
+PROJECT STRUCTURE REQUIRED:
+You MUST create and explain this structure:
+
+📁 PROJECT FILE STRUCTURE (FINAL)
+
+stock_daily_report/
+│
+├── config.py
+│
+├── data/
+│   ├── raw/
+│   │   └── price_data_raw.json
+│   │
+│   ├── processed/
+│   │   └── daily_prices.csv
+│
+├── news/
+│   └── rss_feeds.py
+│
+├── charts/
+│   └── price_chart.png
+│
+├── reports/
+│   └── daily_stock_report.pdf
+│
+├── utils/
+│   ├── price_loader.py
+│   ├── chart_generator.py
+│   ├── news_loader.py
+│   └── summary_generator.py
+│
+├── report_builder.py
+│
+└── main.py
+--------------------------------------------------
+WORKFLOW REQUIREMENTS:
+You must explain the working flow in this order:
+
+PROJECT FLOW (BIG PICTURE)
+
+User Input (config.py)
+        ↓
+Price Data Fetch (Automatic)
+        ↓
+CSV Auto Generation (Internal)
+        ↓
+Price Calculations (OHLC + Time)
+        ↓
+Chart Generation (PNG)
+        ↓
+RSS News Fetch (Automatic)
+        ↓
+Auto Summary (Template-based)
+        ↓
+PDF Report Build
+        ↓
+Final Daily Stock Summary Repor
+
+--------------------------------------------------
+IMPORTANT BEHAVIOR RULES FOR YOU:
+- FIRST respond with:
+  ✅ Requirements review
+  ✅ Potential issues or clarifications
+  ✅ Final confirmed design
+
+- ONLY AFTER THAT:
+  ➜ Write full project code file-by-file
+  ➜ Each file must be clearly labeled
+  ➜ Code must run without modification
+
+- If any requirement is unclear:
+  ➜ Ask precise clarification questions BEFORE coding
+
+--------------------------------------------------
+FINAL EXPECTATION:
+I want a REAL-WORLD, SELLABLE, AUTOMATION-GRADE PROJECT .
+Not tutorial code.
+Not pseudo code.
+Not partial code.
+
+Proceed step-by-step and do not skip review.

@@ -1,0 +1,3 @@
+{
+  "note": "Example raw price data placeholder. The pipeline expects processed CSV at data/processed/daily_prices.csv per spec."
+}

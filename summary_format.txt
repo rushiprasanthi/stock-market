@@ -1,0 +1,53 @@
+FINAL DAILY PDF STRUCTURE (Design Freeze)
+
+Ippudu mee project official blueprint ila untundi:
+
+Header
+
+Stock name
+
+Date
+
+Price Snapshot (Numbers first — 10 sec rule)
+
+Open
+
+Close
+
+High (with time)
+
+Low (with time)
+
+Visual Section
+
+High–Low range + Open–Close chart
+
+(Static, clean, readable)
+
+News Section (3 categories)
+
+Stock-specific news
+
+Geopolitical news
+
+Major market-impact news
+Each item:
+
+Headline
+
+Source
+
+Publish time
+
+Auto Summary (Bullets)
+
+Factual price movement
+
+High/Low timing
+
+News presence mention
+
+No explanations, no advice
+
+This structure cannot accidentally drift into analysis.
+That is very good product discipline.
