@@ -1,59 +1,82 @@
 # config.py
 import os
 from datetime import datetime
+
 # ===============================
-# RSS NEWS FEEDS (OPTIMIZED & FAST)
+# BASIC STOCK SETTINGS
+# ===============================
+
+STOCK_NAME = "RELIANCE.NS"
+STOCK_FULL_NAME = "Reliance Industries Ltd"
+
+USE_TODAY_DATE = True
+MANUAL_DATE = "2026-01-20"
+
+# ===============================
+# TIMEZONE & REGION AUTO-DETECTION
+# ===============================
+
+if STOCK_NAME.endswith(".NS") or STOCK_NAME.endswith(".BO"):
+    EXCHANGE_TIMEZONE = "Asia/Kolkata"
+    REGION = "IN"
+    LANGUAGE = "en-IN"
+else:
+    EXCHANGE_TIMEZONE = "US/Eastern"
+    REGION = "US"
+    LANGUAGE = "en-US"
+
+BASE_SYMBOL = STOCK_NAME.split(".")[0]
+
+# ===============================
+# RSS NEWS FEEDS (DYNAMIC)
 # ===============================
 
 RSS_FEEDS = {
 
     # ---------------------------------
-    # STOCK-SPECIFIC (FAST AGGREGATORS)
+    # STOCK-SPECIFIC
     # ---------------------------------
     "stock": [
-        # Yahoo Finance aggregates earnings, filings, analyst notes
-        "https://feeds.finance.yahoo.com/rss/2.0/headline?s=AAPL&region=US&lang=en-US",
+        # Yahoo Finance dynamic feed
+        f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={BASE_SYMBOL}&region={REGION}&lang={LANGUAGE}",
 
-        # Reuters company news (covers filings + legal + corporate)
+        # Reuters company coverage
         "https://feeds.reuters.com/reuters/companyNews",
+
+        # Indian sources (better for NSE stocks)
+        "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+        "https://www.moneycontrol.com/rss/latestnews.xml",
     ],
 
     # ---------------------------------
-    # GEOPOLITICAL (MARKET-MOVING ONLY)
+    # GEOPOLITICAL
     # ---------------------------------
     "geopolitical": [
-        # Reuters World = wars, sanctions, trade, diplomacy
         "https://feeds.reuters.com/Reuters/worldNews",
     ],
 
     # ---------------------------------
-    # MARKET / MACRO (SYSTEMIC RISK)
+    # MARKET / MACRO
     # ---------------------------------
     "market": [
-        # Reuters Markets = rates, inflation, central banks
         "https://feeds.reuters.com/reuters/marketsNews",
     ],
 }
 
 # ===============================
-# BASIC SETTINGS
+# MARKET HOURS (AUTO ADJUST)
 # ===============================
 
-STOCK_NAME = "AAPL"
-STOCK_FULL_NAME = "Apple Inc."
-
-USE_TODAY_DATE = True
-MANUAL_DATE = "2026-01-20"
-EXCHANGE_TIMEZONE = "US/Eastern"
-
-# ===============================
-# MARKET HOURS (USED BY utils/price_loader.py)
-# ===============================
-
-MARKET_OPEN_HOUR = 9
-MARKET_OPEN_MINUTE = 30
-MARKET_CLOSE_HOUR = 16
-MARKET_CLOSE_MINUTE = 0
+if REGION == "IN":
+    MARKET_OPEN_HOUR = 9
+    MARKET_OPEN_MINUTE = 15
+    MARKET_CLOSE_HOUR = 15
+    MARKET_CLOSE_MINUTE = 30
+else:
+    MARKET_OPEN_HOUR = 9
+    MARKET_OPEN_MINUTE = 30
+    MARKET_CLOSE_HOUR = 16
+    MARKET_CLOSE_MINUTE = 0
 
 # ===============================
 # PATHS
@@ -75,10 +98,9 @@ PDF_OUTPUT_PATH = os.path.join(REPORTS_DIR, "daily_stock_report.pdf")
 LOG_FILE_PATH = os.path.join(LOGS_DIR, "report_builder.log")
 
 # ===============================
-# NEWS SETTINGS (tunable)
+# NEWS SETTINGS
 # ===============================
 
-# We'll import the actual RSS_FEEDS from news/rss_feeds.py
 NEWS_LOOKBACK_HOURS = 24
 MAX_NEWS_PER_CATEGORY = 8
 
@@ -91,14 +113,12 @@ CHART_HEIGHT = 3.5
 CHART_DPI = 150
 
 # ===============================
-# PDF FONT SIZES (YOUR EXACT MODIFICATIONS)
+# PDF FONT SIZES
 # ===============================
 
 PDF_FONT_SIZE_TITLE = 26
 PDF_FONT_SIZE_META = 11
 PDF_FONT_SIZE_SECTION = 14
-
-# existing sizes preserved
 PDF_FONT_SIZE_BODY = 10
 PDF_FONT_SIZE_SMALL = 8
 
@@ -129,5 +149,4 @@ def validate_config():
     if not USE_TODAY_DATE and not MANUAL_DATE:
         raise ValueError("MANUAL_DATE required when USE_TODAY_DATE=False")
 
-# Ensure directories exist (required by multiple modules)
 ensure_directories()

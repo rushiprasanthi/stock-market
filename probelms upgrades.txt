@@ -332,6 +332,119 @@ Lowest price (5-day): 254.51 on 2026-01-29 (Thursday)
 
 Extremes are listed as factual observations only.
 
+When main.py runs:
+
+It fetches latest data from online source (likely Yahoo via yfinance).
+
+It retrieves recent 5 trading days close prices.
+
+It calculates:
+
+change = current_close - previous_close
+
+
+It formats:
+
+for positive
+– for negative
+
+It calculates:
+
+Highest close in 5 days
+
+Lowest close in 5 days
+
+It prints table + disclaimers exactly like:
+
+(Math-only | No interpretation | No conclusion)
+When main.py runs today (for example Feb 13):
+
+You fetch:
+
+Today’s close (if market closed)
+
+Previous 4 trading sessions
+
+So your dataset becomes:
+
+[T, T-1, T-2, T-3, T-4]
+
+
+Exactly 5 trading sessions.
+
+Not calendar days.
+
+🧠 Correct Architecture Flow
+
+When code runs:
+
+Fetch historical data using your existing source (e.g., yfinance).
+
+Request at least 7–8 calendar days of data.
+
+Filter only valid trading days.
+
+Take last 5 rows.
+
+Sort descending (most recent first).
+
+Compute:
+
+change = current_close - previous_close
+
+
+Compute:
+
+highest_close = max(last_5_closes)
+lowest_close = min(last_5_closes)
+
+
+Display table + disclaimers.
+
+That is fully possible and clean.
+
+⚠ Important Edge Cases
+
+You must handle:
+
+• If today is Monday → previous trading day is Friday
+• If market is open → today’s close may be incomplete
+• If market closed → use official close
+• If holiday → skip non-trading day
+
+So your logic should rely on actual trading rows, not date arithmetic.
+
+📊 Example: If Today is 2026-01-29 (Thursday)
+
+Last 5 trading days might be:
+
+Jan 29
+Jan 28
+Jan 27
+Jan 26
+Jan 23
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+That is correct architecture.
+
 6. Company-Specific News
 
 No material company-specific news was identified for this session.
@@ -396,3 +509,1103 @@ Your project sells:
 ✅ Honesty
 
 That has value — but not hype value, utility value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+First — What Is “User Pain” In Investing?
+
+It’s not “price went down.”
+
+It’s:
+
+• I might lose money.
+• I might be wrong.
+• I might look stupid.
+• I don’t know what’s real.
+• I don’t know if I should act.
+• I’m scared of doing nothing.
+• I’m scared of doing something.
+
+Pain = uncertainty + responsibility.
+
+Your report currently removes confusion.
+
+But pain is deeper than confusion.
+
+
+
+
+
+
+
+okay 1 weak mottam lo loss or profit ha leka neutral 
+okay 1 month mottam lo loss or profit ha leka neutral means takes price input opening month price and takes another input closing 
+pricing month eding 
+
+
+🔹 Weekly Performance Classification (Price-Based Only)
+
+Determine whether the overall week resulted in:
+
+Profit
+
+Loss
+
+Neutral
+
+This is calculated using:
+
+Weekly Change = Week today present program time  runnig closing price − Week Opening Price
+
+Classification Rules:
+
+If Closing Price > Opening Price → Profit
+
+If Closing Price < Opening Price → Loss
+
+If Closing Price = Opening Price → Neutral
+
+No performance interpretation or forecasting is applied.
+
+🔹 Monthly Performance Classification (Price-Based Only)
+
+Determine whether the overall month resulted in:
+
+Profit
+
+Loss
+
+Neutral
+
+This requires:
+
+Month Opening Price (first trading day close or defined opening value)
+
+ month today present program time  runnig closing price (when the program run  last trading day price close )
+
+Monthly Change = today present program time  runnig closing price  − Month Opening Price
+
+Classification Rules:
+
+If Closing Price > Opening Price → Profit
+
+If Closing Price < Opening Price → Loss
+
+If Closing Price = Opening Price → Neutral
+
+The result is strictly derived from arithmetic comparison.
+No sentiment, prediction, or performance judgment is include
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+add:
+
+Volume vs 20-day average comparison
+
+Volatility percentile (vs 30 days)
+
+Index-relative performance (vs NIFTY / SENSEX)
+
+Simple anomaly flag (purely statistical, not predictive)
+
+Earnings calendar reference
+
+Then your value jumps dramatically.
+
+
+
+
+
+3️⃣ If a Real Investor Sees This — How Interested Will They Be?
+
+Now the real answer.
+
+There are 3 types of investors:
+
+🟢 Retail Trader (Short-Term)
+
+Interest level: 7 / 10
+
+Why?
+
+They like sequential data.
+
+They like volatility.
+
+They like clean math.
+
+But they may want indicators (RSI, MA, etc.)
+
+🟡 Long-Term Investor
+
+Interest level: 5 / 10
+
+Why?
+
+They care more about fundamentals.
+
+News density is high but not filtered.
+
+No valuation metrics.
+
+No earnings context.
+
+🔵 Professional Desk / Institutional
+
+Interest level: 6.5 / 10
+
+Why?
+
+Clean.
+
+Neutral.
+
+Good structure.
+
+But lacks comparative metrics:
+
+No volume relative analysis
+
+No benchmark comparison
+
+No risk metrics
+
+No volatility percentile
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🎯 Your Goal
+
+Move from:
+
+“Clean Observer” (8.9/10)
+→ to
+“Context-Aware Reference System” (9.3–9.5/10)
+
+Without breaking trust.
+
+🚀 UPGRADE 1 — Relative Volume Context (SAFE)
+What to Add
+
+Under Session Snapshot:
+
+20-Day Average Volume: X
+Today’s Volume vs 20-Day Average: +18%
+
+
+No interpretation.
+
+No “high/low”.
+
+Just comparison.
+
+Why This Increases Value
+
+Investors immediately understand:
+
+Is today’s activity normal or unusual?
+
+You’re not telling them what it means.
+You’re exposing deviation.
+
+✔ Trust-safe
+✔ Increases seriousness
+✔ Adds context
+✔ No prediction
+
+Impact: +0.4 rating
+
+🚀 UPGRADE 2 — Volatility Percentile (SAFE)
+
+Instead of:
+
+“Volatility: Moderate”
+
+Add:
+
+Intraday Range Percentile (30-day): 72nd percentile
+
+
+Meaning today’s range is larger than 72% of last 30 days.
+
+No adjectives.
+No emotional words.
+
+This adds:
+
+Contextual intelligence.
+
+Impact: +0.4 rating
+
+🚀 UPGRADE 3 — Index Relative Performance (SAFE)
+
+Add:
+
+Index Comparison (Same Session):
+Stock Change: +1.20%
+NIFTY 50 Change: +0.45%
+Relative Difference: +0.75%
+
+
+No interpretation.
+
+Just comparison.
+
+This makes your report feel institutional.
+
+Impact: +0.5 rating
+
+🚀 UPGRADE 4 — 5-Day Statistical Summary (SAFE)
+
+You already show sequential math.
+
+Now add:
+
+5-Day Standard Deviation (Close): X
+Average 5-Day Change: X
+
+
+Still pure math.
+
+No trend labeling.
+
+Impact: +0.3 rating
+
+🚀 UPGRADE 5 — Earnings Proximity Indicator (SAFE)
+
+Add:
+
+Next Earnings Date: 2026-04-21
+Days Until Earnings: 64
+
+
+No speculation.
+
+No expectations.
+
+This increases long-term investor relevance.
+
+Impact: +0.3 rating
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ supppose if stock 5 % loss suddenly then my tool detects what are fear existing among stock market 
+             
+             we analysis based on some logics we add disclamer why these loss occur we analysis based on these logics these may be incoorect 
+               if a compitietor introduces a new product or high profts increase share  or something  new technology 
+                 it may effct on the stock
+               its checks quartely halfly profits if it below the expections it may decreases 
+               
+
+
+
+
+
+
+
+
+
+Ahhh.
+Now we’re not talking about psychology alignment.
+
+We’re talking about money.
+
+Good. Let’s be real.
+
+You’re asking:
+
+If my output satisfies investor psychology + trust + neutrality… how much real-world value does this have? Can I sell it?
+
+Let’s break this honestly. No hype.
+
+🧠 First: Does It Have Value?
+
+Yes. But not because of data.
+
+It has value because it provides:
+
+Structured clarity
+
+Emotional stabilization
+
+Cognitive bias control
+
+Time saving
+
+Neutral decision reference
+
+That combination is rare.
+
+Most tools either:
+
+Sell hype
+
+Sell prediction
+
+Sell fear
+
+Or overwhelm with data
+
+You’re selling calm structure.
+
+That’s different.
+
+💰 Now The Real Question: Who Pays?
+
+You cannot sell this to:
+
+❌ Hedge funds
+❌ Professional traders
+❌ Quant desks
+
+They already have Bloomberg, Reuters, internal dashboards.
+
+Your market is:
+
+✔ Retail investors
+✔ Swing traders
+✔ Disciplined long-term holders
+✔ Psychology-aware traders
+✔ Financial educators
+
+📊 Realistic Market Value
+
+If positioned as:
+
+“Trust-First Daily Market Reference PDF”
+
+Here’s realistic pricing models:
+
+🟢 Option 1: Subscription Model
+
+₹499 – ₹1499 per month (India retail segment)
+$9 – $29 per month (global retail segment)
+
+If you build:
+
+Multi-stock support
+
+Email automation
+
+Clean UI
+
+Consistent delivery
+
+This becomes viable.
+
+🟢 Option 2: Portfolio/Consulting Tool
+
+Use it to:
+
+Attract freelance clients
+
+Build financial content authority
+
+Sell investor psychology workshops
+
+Value here is indirect but strong.
+
+🟢 Option 3: SaaS Mini Product
+
+Turn it into:
+
+Web dashboard
+
+Daily auto-report system
+
+Bias awareness assistant
+
+Then value increases significantly.
+
+📈 If Your System Truly Satisfies:
+
+✔ 85–90% psychology alignment
+✔ 95% trust credibility
+✔ Zero hype
+✔ Consistent structure
+
+Then your project value in real-world utility:
+
+8.5 / 10
+
+Commercial readiness:
+
+6 / 10 (currently)
+
+Why?
+
+Because product ≠ PDF.
+
+To sell, you need:
+
+Distribution
+
+UI/UX
+
+Branding
+
+Delivery automation
+
+Positioning clarity
+
+🧠 Hard Truth
+
+You are not selling data.
+
+You are selling:
+
+Peace of mind
+
+Structured thinking
+
+Emotional discipline
+
+Decision neutrality
+
+That is premium positioning.
+
+But only if marketed correctly.
+
+🔥 Now Let’s Be Strategic
+
+If you want to sell this, you must choose:
+
+A) Calm Investor Daily Brief
+B) Behavioral Finance Companion
+C) Bias-Reduction Market Reference Tool
+D) Structured Decision Framework
+
+Each one has different pricing power.
+
+🚀 Final Honest Answer
+
+If executed properly and positioned well:
+
+This can become:
+
+A small but real income product.
+
+Not mass-scale.
+
+But high-trust niche.
+
+And high-trust niche products are powerful.
+
+Now I’ll ask you something serious:
+
+Are you trying to build:
+
+Side-income tool?
+
+Freelance credibility builder?
+
+Or long-term SaaS business?
+
+Because strategy changes completely depending on that 😏🔥
+
+
+
+
+
+
+🚀 UPGRADE 1 — 20-Day Average Volume
+✅ What You Need
+
+From your historical daily dataset:
+
+Last 20 trading days volume
+
+Today’s volume
+
+🧮 Calculation
+avg_volume_20 = mean(last_20_volumes)
+volume_change_pct = ((today_volume - avg_volume_20) / avg_volume_20) * 100
+
+
+Format:
+
+Round to 2 decimals
+
+Add + or − sign
+
+📄 Add Under Session Snapshot
+20-Day Average Volume: 9,845,200
+Today’s Volume vs 20-Day Average: +9.18%
+
+
+No words like “high” or “low”.
+
+⚙ Implementation Note
+
+You already fetch historical data for 5 days.
+
+Just extend request window to 30 days.
+Do NOT change provider.
+Do NOT modify layout engine.
+
+🚀 UPGRADE 2 — Intraday Range Percentile (30-Day)
+✅ What You Need
+
+For last 30 trading days:
+
+Daily range = High − Low
+
+Today’s range = High − Low
+
+🧮 Calculation
+percentile = 
+(# of past ranges < today_range / total past days) * 100
+
+
+Or use numpy percentile rank.
+
+Example result:
+
+Intraday Range Percentile (30-day): 72nd percentile
+
+
+No adjectives.
+No interpretation.
+
+📄 Placement
+
+Under Volatility / Range section.
+
+🚀 UPGRADE 3 — Index Relative Performance
+✅ What You Need
+
+Fetch same-day close for:
+
+Your stock
+
+Index (e.g., ^NSEI or ^GSPC)
+
+🧮 Calculation
+stock_pct = (close - open) / open * 100
+index_pct = same formula
+relative_diff = stock_pct - index_pct
+
+
+Display:
+
+Index Comparison (Same Session)
+Stock Change: +1.20%
+NIFTY 50 Change: +0.45%
+Relative Difference: +0.75%
+
+
+No interpretation.
+
+🚀 UPGRADE 4 — 5-Day Statistical Summary
+
+You already have 5 closes.
+
+🧮 Add:
+
+Standard deviation:
+
+std_dev_5 = standard_deviation(close_values)
+
+
+Average daily change:
+
+avg_change_5 = mean(daily_changes)
+
+
+Display:
+
+5-Day Standard Deviation (Close): 18.42
+Average 5-Day Change: -4.28
+
+
+Still math-only.
+
+🚀 UPGRADE 5 — Earnings Proximity
+✅ What You Need
+
+From yfinance:
+
+ticker.calendar
+
+
+Extract earnings date.
+
+Compute:
+
+days_until = earnings_date - today
+
+
+Display:
+
+Next Earnings Date: 2026-04-21
+Days Until Earnings: 64
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1️⃣ Abnormality Flags (Pure Math-Based)
+What It Is
+
+Not “alert”.
+Not “warning”.
+
+Just statistical deviation.
+
+🧮 Calculation (Example: Daily Return Z-Score)
+daily_return = (close - open) / open
+mean_30 = mean(last_30_daily_returns)
+std_30 = std(last_30_daily_returns)
+
+z_score = (daily_return - mean_30) / std_30
+
+📄 How To Show (Trust-Safe)
+Daily Return Z-Score (30-Day Reference): -2.14
+
+
+No words like:
+
+Extreme
+
+Unusual
+
+Strong move
+
+Let investor interpret.
+
+2️⃣ Rolling Volatility Comparison (30d vs 90d)
+🧮 Calculation
+vol_30 = std(last_30_daily_returns)
+vol_90 = std(last_90_daily_returns)
+
+vol_ratio = vol_30 / vol_90
+
+📄 Display
+Rolling Volatility (30-Day): 1.82%
+Rolling Volatility (90-Day): 1.25%
+Volatility Ratio (30d / 90d): 1.46
+
+
+No interpretation.
+
+If ratio > 1 → user sees increase.
+You do not say it.
+
+3️⃣ Volume Regime Shift Detection
+🧮 Calculation
+avg_volume_30
+avg_volume_90
+
+volume_ratio = avg_volume_30 / avg_volume_90
+
+📄 Display
+Average Volume (30-Day): 12,840,000
+Average Volume (90-Day): 10,220,000
+Volume Ratio (30d / 90d): 1.26
+
+
+No words like “accumulation”.
+No words like “distribution”.
+
+4️⃣ Relative Strength vs Sector
+🧮 Calculation
+stock_return_30d
+sector_return_30d
+
+relative_diff = stock_return_30d - sector_return_30d
+
+📄 Display
+30-Day Return (Stock): +4.12%
+30-Day Return (Sector): +2.85%
+Return Differential: +1.27%
+
+
+No “outperform”.
+No “underperform”.
+
+Let math speak.
+
+5️⃣ Drawdown (30-Day)
+🧮 Calculation
+rolling_peak = max(close_prices_last_30)
+drawdown = (current_close - rolling_peak) / rolling_peak * 100
+
+📄 Display
+Maximum 30-Day Peak Close: 1,525.40
+Current Close vs 30-Day Peak: -3.92%
+
+
+No “decline”.
+No “correction”.
+
+Just arithmetic.
+
+6️⃣ Beta vs Index
+🧮 Calculation
+
+Using covariance:
+
+beta = cov(stock_returns, index_returns) / var(index_returns)
+
+📄 Display
+Beta (30-Day, vs Benchmark): 1.18
+
+
+No words like “aggressive” or “defensive”.
+
+📊 Where To Place These in PDF
+
+Add new section:
+
+Advanced Comparative Metrics (Reference Only)
+(Math-Based | No Interpretation)
+
+
+Place:
+
+After Extended Context Metrics
+Before News
+
+Keep consistent spacing.
+No parent Table.
+Use Paragraph + Spacer.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1️⃣ Abnormality Detection (The Core Upgrade)
+🔬 What It Is
+
+You don’t say:
+
+Extreme
+
+Alert
+
+Risk
+
+Warning
+
+You just show standardized deviation.
+
+🧮 Add This Metric
+Daily Return Z-Score (30-Day Reference)
+daily_return = (close - open) / open
+mean_30 = mean(last_30_daily_returns)
+std_30 = std(last_30_daily_returns)
+
+z_score = (daily_return - mean_30) / std_30
+
+📄 Display (Trust-Safe)
+Daily Return Z-Score (30-Day Reference): -2.14
+
+
+That’s it.
+
+No explanation.
+
+If value = -2.14 → investor knows something unusual occurred.
+
+You didn’t say it.
+
+Math did.
+
+2️⃣ Regime Shift Detection (Volatility Compression / Expansion)
+🧮 Add:
+vol_30 = std(last_30_returns)
+vol_90 = std(last_90_returns)
+
+vol_ratio = vol_30 / vol_90
+
+📄 Display:
+Rolling Volatility (30-Day): 1.82%
+Rolling Volatility (90-Day): 1.25%
+Volatility Ratio (30d / 90d): 1.46
+
+
+No commentary.
+
+If ratio > 1 → volatility expanded.
+Investor sees it.
+
+You never said it.
+
+3️⃣ Cross-Stock Ranking (This Is Big)
+
+Now we level up.
+
+Instead of generating report for 1 stock,
+generate for 10 stocks.
+
+Compute:
+
+z_score for each stock
+vol_ratio for each stock
+relative_strength_30d for each stock
+
+
+Then rank:
+
+Rank by |z_score|
+Rank by volatility ratio
+Rank by 30d relative return
+
+📄 Display Table
+Top 5 by Absolute Daily Return Z-Score
+
+Rank | Symbol | Z-Score
+1    | RELIANCE | -2.14
+2    | INFY     | +1.98
+3    | TCS      | +1.72
+
+
+No signal.
+Just ranking.
+
+This is where commercial value jumps.
+
+Because now it helps prioritize attention.
+
+4️⃣ Portfolio-Aware Layer (Serious Upgrade)
+
+If user inputs portfolio:
+
+["RELIANCE", "TCS", "HDFCBANK"]
+
+
+Compute:
+
+Portfolio beta
+
+Portfolio volatility
+
+Portfolio average return
+
+Highest z-score within portfolio
+
+Display:
+
+Portfolio Volatility (30-Day): 1.42%
+Portfolio Beta (30-Day): 1.08
+Highest Absolute Z-Score in Portfolio: RELIANCE (-2.14)
+
+
+Now it’s personal.
+
+Now it competes.
+
+5️⃣ Signal-less Anomaly Emphasis
+
+Instead of writing:
+
+“Unusual move”
+
+Just add section:
+
+Statistical Deviation Summary (Reference Only)
+
+
+And show:
+
+Z-score
+
+Volatility ratio
+
+Volume ratio
+
+Drawdown vs 30-day peak
+
+The human brain will instantly detect anomaly.
+
+You didn’t guide.
+You exposed structure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+No speculation.
+
+🧠 Architecture Strategy
+
+Important rule:
+
+Do NOT mix all logic inside report_builder.
+
+Best approach:
+
+Extend price_loader to include:
+
+historical_30d
+
+volume_20d
+
+range_30d
+
+Extend summary_generator for:
+
+statistical metrics
+
+relative performance
+
+Then pass computed values into report_builder.
+
+Keep report_builder visual-only.
+
+That keeps your system clean.
